@@ -1,18 +1,10 @@
-import os
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    raise RuntimeError("Falta DATABASE_URL")
+DATABASE_URL = "mysql+pymysql://SantiDB77hello:SantiDBpass77$@HOST/hello"
 
-engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True,
-    future=True,
-)
-
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 def get_db():
@@ -21,7 +13,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-def test_connection():
-    with engine.connect() as conn:
-        conn.execute(text("SELECT 1"))
