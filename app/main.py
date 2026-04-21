@@ -1,4 +1,8 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI
+from app.db import test_connection
 from app.db import engine
 from app.models.user import User
 from app.models.note import Note
